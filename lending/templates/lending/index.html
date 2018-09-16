@@ -1,0 +1,12 @@
+{% extends 'lending/base.html' %}
+{% block title %}Index{% endblock %}
+
+{% block body %}
+	{% if all_users %}
+	<ul>
+		{% for user in all_users %}
+		<li><a href="{% url 'lending:show_user' user.id %}">{{ user.name }}</a></li>
+		{% endfor %}
+	</ul>
+	{% endif %}
+{% endblock %}

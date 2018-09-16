@@ -1,0 +1,8 @@
+{% extends 'lending/base.html' %}
+{% block title %}Lending{% endblock %}
+
+{% block body %}
+	<h1>Welcome</h1>
+	<div><a href="{% url 'lending:register' %}">sign up</a></div>
+	<div><a href="{% url 'lending:login' %}">login</a></div>
+{% endblock %}

@@ -13,7 +13,11 @@ def index(request):
     return render(request, 'lending/index.html', { 'all_users': all_users, })
 
 def home(request):
-   return render(request, 'lending/home.html')
+    return render(request, 'lending/home.html')
+
+def dashboard(request):
+    user = request.user
+    return render(request, 'lending/dashboard.html', { 'user': user })
 
 def show_user(request, user_id):
     user = get_object_or_404(User, pk=user_id)
@@ -45,7 +49,7 @@ class UserFormView(View):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return redirect('lending:index')
+                    return redirect('lending:dashboard')
 
         return render(request, self.template_name, {'form': form})
 
@@ -69,6 +73,6 @@ class LoginFormView(View):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return redirect('lending:index')
+                    return redirect('lending:dashboard')
 
         return render(request, self.template_name, {'form': form})

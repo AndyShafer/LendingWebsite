@@ -4,13 +4,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.views import generic
 from django.views.generic import View
-from .models import User
+#from .models import User
 from .forms import UserForm, LoginForm
 
-
-def index(request):
-    all_users = User.objects.all()
-    return render(request, 'lending/index.html', { 'all_users': all_users, })
 
 def home(request):
     return render(request, 'lending/home.html')

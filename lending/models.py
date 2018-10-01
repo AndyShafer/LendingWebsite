@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Profile(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, default=None, editable=False)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, default=None, editable=False)
     address = models.CharField(max_length=100, default='')
     city = models.CharField(max_length=100, default='')
     state = models.CharField(max_length=100, default='')

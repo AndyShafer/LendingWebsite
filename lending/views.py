@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.views import generic
 from django.views.generic.edit import UpdateView
 from django.views.generic import View
@@ -11,6 +11,8 @@ from .forms import UserForm, LoginForm
 
 
 def home(request):
+    if request.user.is_authenticated:
+        return redirect('lending:dashboard')
     return render(request, 'lending/home.html')
 
 def dashboard(request):
@@ -24,6 +26,10 @@ def show_user(request, user_id):
 def show_profile(request, profile_id):
     profile = get_object_or_404(Profile, pk=profile_id)
     return render(request, 'lending/show_profile.html', {'profile': profile})
+
+def log_out(request):
+    logout(request) 
+    return redirect('lending:home')
 
 class UserFormView(View):
     form_class = UserForm
@@ -48,9 +54,9 @@ class UserFormView(View):
 
             user = authenticate(username=username, password=password)
             
-            profile = Profile.objects.create(user=user)
 
             if user is not None:
+                profile = Profile.objects.create(user=user)
                 if user.is_active:
                     login(request, user)
                     return redirect('lending:profile-edit', pk=profile.id)
@@ -91,6 +97,12 @@ class LoginFormView(View):
             user = authenticate(username=username, password=password)
 
             if user is not None:
+                # Create a profile for the user if it is missing.
+                try:
+                    user.profile
+                except ObjectDoesNotExist:
+                    profile = Profile.objects.create(user=user)
+
                 if user.is_active:
                     login(request, user)
                     return redirect('lending:dashboard')

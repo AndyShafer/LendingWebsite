@@ -7,4 +7,7 @@
 	<div>{{ profile.city }}</div>
 	<div>{{ profile.state }}</div>
 	<div>{{ profile.bio }}</div>
+	{% if profile.user.id == user.id %}
+		<div><a href="{% url 'lending:profile-edit' profile.id %}">Edit</a></div>
+	{% endif %}
 {% endblock %}

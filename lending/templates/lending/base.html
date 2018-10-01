@@ -15,6 +15,21 @@
 			<div class=navbar-header">
 				<a class="navbar-brand" href="{% url 'lending:home' %}">Lending</a>
 			</div>
+			{% if user.is_authenticated %}
+				<div class="navbar-header">
+					<a href="{% url 'lending:show_profile' user.profile.id %}">{{ user }}</a>
+				</div>
+				<div class="navbar-header">
+					<a href="{% url 'lending:logout' %}">Log out</a>
+				</div>
+			{% else %}
+				<div class="navbar-header">
+					<a href="{% url 'lending:login' %}">Login</a>
+				</div>
+				<div class="navbar-header">
+					<a href="{% url 'lending:register' %}">Sign up</a>
+				</div>
+			{% endif %}
 		</div>
 	</nav>
 </body>

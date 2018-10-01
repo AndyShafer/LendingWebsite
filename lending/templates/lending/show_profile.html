@@ -1,0 +1,10 @@
+{% extends 'lending/base.html' %}
+{% block title %}{{ profile.user }}{% endblock %}
+
+{% block body %}
+	<div>{{ profile.user }}</div>
+	<div>{{ profile.address }}</div>
+	<div>{{ profile.city }}</div>
+	<div>{{ profile.state }}</div>
+	<div>{{ profile.bio }}</div>
+{% endblock %}

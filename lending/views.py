@@ -21,6 +21,10 @@ def show_user(request, user_id):
     user = get_object_or_404(User, pk=user_id)
     return render(request, 'lending/show_user.html', {'user': user})
 
+def show_profile(request, profile_id):
+    profile = get_object_or_404(Profile, pk=profile_id)
+    return render(request, 'lending/show_profile.html', {'profile': profile})
+
 class UserFormView(View):
     form_class = UserForm
     template_name = 'lending/registration_form.html'

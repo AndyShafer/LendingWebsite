@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from django.views import generic
 from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic import View
@@ -26,6 +27,11 @@ def show_user(request, user_id):
 def show_profile(request, profile_id):
     profile = get_object_or_404(Profile, pk=profile_id)
     return render(request, 'lending/show_profile.html', {'profile': profile})
+
+def show_objects(request, user_id):
+    user = get_object_or_404(User, pk=user_id)
+    users_objects = Object.objects.filter(ownedBy=user_id)
+    return render(request, 'lending/show_objects.html', {'user': user, 'objects': users_objects})
 
 def log_out(request):
     logout(request) 

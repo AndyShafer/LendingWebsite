@@ -1,0 +1,15 @@
+{% extends 'lending/base.html' %}
+{% block title %}{{ user }}{% endblock %}
+
+{% block body %}
+	{% if objects %}
+	{% for object in objects %}
+		<div>
+			<div>{{ object.name }}</div>	
+			<div>{{ object.description }}</div>	
+		</div>
+	{% endfor %}	
+	{% else %}
+		<div>{{ user }} has no objects available for lending.</div>
+	{% endif %}
+{% endblock %}

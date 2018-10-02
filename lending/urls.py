@@ -12,5 +12,6 @@ urlpatterns = [
         url(r'^login/$', views.LoginFormView.as_view(), name='login'),
         url(r'^logout/$', views.log_out, name='logout'),
         url(r'^dashboard/$', views.dashboard, name='dashboard'),
-        url(r'^add-object/$', views.CreateObject.as_view(), name='create-object')
+        url(r'^add-object/$', views.CreateObject.as_view(), name='create-object'),
+        url(r'^show-objects/(?P<user_id>[0-9]+)/$', views.show_objects, name='show-objects'),
 ]

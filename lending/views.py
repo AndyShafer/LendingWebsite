@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.views import generic
-from django.views.generic.edit import UpdateView, CreateView
+from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic import View
 from django.urls import reverse_lazy
 from .models import Profile, Object
@@ -31,7 +31,7 @@ def show_profile(request, profile_id):
 def show_objects(request, user_id):
     user = get_object_or_404(User, pk=user_id)
     users_objects = Object.objects.filter(ownedBy=user_id)
-    return render(request, 'lending/show_objects.html', {'user': user, 'objects': users_objects})
+    return render(request, 'lending/show_objects.html', {'owner': user, 'objects': users_objects})
 
 def log_out(request):
     logout(request) 
@@ -93,6 +93,38 @@ class CreateObject(CreateView):
     def form_valid(self, form):
         form.instance.ownedBy = self.request.user
         return super(CreateObject, self).form_valid(form)
+
+class UpdateObject(UpdateView):
+    model = Object
+    fields = ['name', 'description']
+    success_url = reverse_lazy('lending:dashboard')
+
+    def user_passes_test(self, request):
+        if request.user.is_authenticated:
+            self.object = self.get_object()
+            return self.object.ownedBy == request.user
+        return False
+
+    def dispatch(self, request, *args, **kwargs):
+        if not self.user_passes_test(request):
+            return redirect('lending:login')
+        return super(UpdateObject, self).dispatch(request, *args, **kwargs)
+
+class DeleteObject(DeleteView):
+    model = Object
+    success_url = reverse_lazy('lending:dashboard')
+
+    def user_passes_test(self, request):
+        if request.user.is_authenticated:
+            self.object = self.get_object()
+            return self.object.ownedBy == request.user
+        return False
+
+    def dispatch(self, request, *args, **kwargs):
+        if not self.user_passes_test(request):
+            return redirect('lending:login')
+        return super(DeleteObject, self).dispatch(request, *args, **kwargs)
+
 
 class LoginFormView(View):
     form_class = LoginForm

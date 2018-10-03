@@ -5,8 +5,14 @@
 	{% if objects %}
 	{% for object in objects %}
 		<div>
-			<div>{{ object.name }}</div>	
+			<div><h3>{{ object.name }}</h3></div>	
 			<div>{{ object.description }}</div>	
+			{% if user.id == owner.id %}
+				<div><a href="{% url 'lending:update-object' object.id %}">Edit</a></div>
+				<div><a href="{% url 'lending:delete-object' object.id %}">Delete</a></div>
+			{% else %}
+				<div><a href="#">Request</a></div>
+			{% endif %}
 		</div>
 	{% endfor %}	
 	{% else %}

@@ -1,0 +1,62 @@
+{% extends 'lending/base.html' %}
+{% block title %}Requests{% endblock %}
+
+<script>
+	function show(select_item) {
+		$(".select_display").hide();
+		$("#" + select_item).show();
+	}
+</script>
+
+{% block body %}
+	<select name="Filter Contracts" onchange="java_script_:
+		$('.select_display').hide(); $('#' + this.options[this.selectedIndex].value).show()">
+		<option value="lending">Lending Contracts</options>
+		<option value="borrowing">Borrowing Contracts</options>
+		<option value="pending">Pending Approval</options>
+	</select>
+	<div class="select_display" id="lending">
+		{% if lending_contracts %}
+		{% for contract in lending_contracts %}
+			<div>
+				<div><h3>{{ contract.borrowedObject }}</div>
+				<div>Borrower: {{ contract.borrowedBy }}</div>
+				<div>Start time: {{ contract.startTime }}</div>
+				<div>End time: {{ contract.endTime }}</div>
+			</div>
+		{% endfor %}
+		{% else %}
+			<h3>You currently have no lending contracts</h3>
+		{% endif %}
+	</div>
+	<div class="select_display" id="borrowing" style="display:none;">
+		{% if borrowing_contracts %}
+		{% for contract in borrowing_contracts %}
+			<div>
+				<div><h3>{{ contract.borrowedObject }}</div>
+				<div>Owner: {{ contract.borrowedObject.ownedBy }}</div>
+				<div>Start time: {{ contract.startTime }}</div>
+				<div>End time: {{ contract.endTime }}</div>
+			</div>
+		{% endfor %}
+		{% else %}
+			<h3>You currently have no borrowing contracts</h3>
+		{% endif %}
+	</div>
+	<div class="select_display" id="pending" style="display:none;">
+		{% if pending_contracts %}
+		{% for contract in pending_contracts %}
+			<div>
+				<div><h3>{{ contract.borrowedObject }}</div>
+				<div>Owner: {{ contract.borrowedObject.ownedBy }}</div>
+				<div>Start time: {{ contract.startTime }}</div>
+				<div>End time: {{ contract.endTime }}</div>
+			</div>
+		{% endfor %}
+		{% else %}
+			<h3>You currently have no requests awaiting approval</h3>
+		{% endif %}
+	
+	</div>
+
+{% endblock %}

@@ -43,10 +43,23 @@ def show_requests(request):
     return redirect('lending:login')
 
 def accept_request(request, request_id):
-    request = get_object_or_404(Contract, pk=request_id)
-    request.acceptedByOwner = True
-    request.save()
-    return redirect('lending:show-requests')
+    if request.user.is_authenticated:
+        request = get_object_or_404(Contract, pk=request_id)
+        request.acceptedByOwner = True
+        request.save()
+        return redirect('lending:show-requests')
+    return redirect('lending:login')
+
+def show_contracts(request):
+    if request.user.is_authenticated:
+        users_objects = Object.objects.filter(ownedBy=request.user)
+        lending_contracts = Contract.objects.filter(borrowedObject__in=users_objects, acceptedByOwner=True)
+        borrowing_contracts = Contract.objects.filter(borrowedBy=request.user, acceptedByOwner=True)
+        pending_requests = Contract.objects.filter(borrowedBy=request.user, acceptedByOwner=False)
+        return render(request, 'lending/show_contracts.html', 
+            {'lending_contracts': lending_contracts, 'borrowing_contracts': borrowing_contracts, 'pending_requests': pending_requests})
+    return redirect('lending:login')
+    
 
 def log_out(request):
     logout(request) 

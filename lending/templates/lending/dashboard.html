@@ -7,5 +7,5 @@
 	<h3><a href="{% url 'lending:create-object' %}">Add Item</a>
 	<h3><a href="{% url 'lending:show-objects' user.id %}">My Items</a>
 	<h3><a href="{% url 'lending:show-requests' %}">Requests</a></h3>
-	<h3><a href="#">Contracts</a></h3>
+	<h3><a href="{% url 'lending:show-contracts' %}">Contracts</a></h3>
 {% endblock %}

@@ -10,6 +10,7 @@ urlpatterns = [
         url(r'^profile/(?P<profile_id>[0-9]+)/$', views.show_profile, name='show_profile'),
         url(r'^requests/$', views.show_requests, name='show-requests'),
         url(r'^requests/accept/(?P<request_id>[0-9]+)/$', views.accept_request, name='accept-request'),
+        url(r'^contracts/$', views.show_contracts, name='show-contracts'),
         url(r'^profile/edit/(?P<pk>[0-9]+)/$', views.UpdateProfile.as_view(), name='profile-edit'),
         url(r'^login/$', views.LoginFormView.as_view(), name='login'),
         url(r'^logout/$', views.log_out, name='logout'),

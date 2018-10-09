@@ -1,0 +1,17 @@
+{% extends 'lending/base.html' %}
+{% block title %}Requests{% endblock %}
+
+{% block body %}
+	{% if requests %}
+		<div><h1>Requests</h1></div>
+		{% for request in requests %}
+			<div>
+				<div><h3>{{ request.borrowedObject }}</h3></div>
+				<div>{{ request.borrowedBy }} has requested to borrow this item from {{ request.startTime }} to {{ request.endTime }}</div>
+				<div><a href="{% url 'lending:accept-request' request.id %}">Accept</a></div>
+			<div>
+		{% endfor %}
+	{% else %}
+		<div><h3>No requests</h3></div>
+	{% endif %}
+{% endblock %}

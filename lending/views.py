@@ -19,7 +19,8 @@ def home(request):
 
 def dashboard(request):
     user = request.user
-    return render(request, 'lending/dashboard.html', { 'user': user })
+    if user.is_authenticated:
+        return render(request, 'lending/dashboard.html', { 'user': user })
 
 def show_user(request, user_id):
     user = get_object_or_404(User, pk=user_id)
@@ -33,6 +34,19 @@ def show_objects(request, user_id):
     user = get_object_or_404(User, pk=user_id)
     users_objects = Object.objects.filter(ownedBy=user_id)
     return render(request, 'lending/show_objects.html', {'owner': user, 'objects': users_objects})
+
+def show_requests(request):
+    if request.user.is_authenticated:
+        users_objects = Object.objects.filter(ownedBy=request.user)
+        requests = Contract.objects.filter(borrowedObject__in=users_objects, acceptedByOwner=False)
+        return render(request, 'lending/show_requests.html', {'requests': requests})
+    return redirect('lending:login')
+
+def accept_request(request, request_id):
+    request = get_object_or_404(Contract, pk=request_id)
+    request.acceptedByOwner = True
+    request.save()
+    return redirect('lending:show-requests')
 
 def log_out(request):
     logout(request) 
@@ -177,4 +191,3 @@ class CreateRequestView(View):
             object_request.save()
             return redirect('lending:dashboard')
         return render(request, self.template_name, {'form': form})
-

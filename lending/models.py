@@ -14,6 +14,9 @@ class Object(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=1000)
 
+    def __str__(self):
+        return self.name
+
 class Contract(models.Model):
     lateFee = models.IntegerField(default=0)
     rentalPrice = models.IntegerField(default=0)

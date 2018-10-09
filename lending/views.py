@@ -3,12 +3,13 @@ from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from django.contrib.admin import widgets
 from django.views import generic
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic import View
 from django.urls import reverse_lazy
-from .models import Profile, Object
-from .forms import UserForm, LoginForm
+from .models import Profile, Object, Contract
+from .forms import UserForm, LoginForm, RequestForm
 
 
 def home(request):
@@ -155,3 +156,25 @@ class LoginFormView(View):
                     return redirect('lending:dashboard')
 
         return render(request, self.template_name, {'form': form})
+
+class CreateRequestView(View):
+    form_class = RequestForm
+    template_name = 'lending/create-request.html'
+
+    def get(self, request, object_id):
+        form = self.form_class(None)
+        obj = get_object_or_404(Object, pk=object_id)
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, object_id):
+        form = self.form_class(request.POST)
+        if form.is_valid() and request.user.is_authenticated:
+            object_request = form.save(commit=False)
+            startTime = form.cleaned_data['startTime']
+            endTime = form.cleaned_data['endTime']
+            object_request.borrowedObject = get_object_or_404(Object, pk=object_id)
+            object_request.borrowedBy = request.user
+            object_request.save()
+            return redirect('lending:dashboard')
+        return render(request, self.template_name, {'form': form})
+

@@ -11,7 +11,7 @@
 				<div><a href="{% url 'lending:update-object' object.id %}">Edit</a></div>
 				<div><a href="{% url 'lending:delete-object' object.id %}">Delete</a></div>
 			{% else %}
-				<div><a href="#">Request</a></div>
+				<div><a href="{% url 'lending:create-request' object.id %}">Request</a></div>
 			{% endif %}
 		</div>
 	{% endfor %}	

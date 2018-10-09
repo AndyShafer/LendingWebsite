@@ -15,10 +15,13 @@ class Object(models.Model):
     description = models.CharField(max_length=1000)
 
 class Contract(models.Model):
-    lateFee = models.IntegerField()
-    rentalPrice = models.IntegerField()
-    startTime = models.DateField()
-    endTime = models.DateField()
-    timeReturned = models.DateField()
+    lateFee = models.IntegerField(default=0)
+    rentalPrice = models.IntegerField(default=0)
+    startTime = models.DateField(blank=True, null=True)
+    endTime = models.DateField(blank=True, null=True)
+    timeBorrowed = models.DateField(blank=True, null=True)
+    timeReturned = models.DateField(blank=True, null=True)
     borrowedObject = models.ForeignKey(Object, on_delete=models.CASCADE)
     borrowedBy = models.ForeignKey(User, on_delete=models.CASCADE)
+    acceptedByOwner = models.BooleanField(default=False)
+

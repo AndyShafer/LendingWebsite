@@ -10,6 +10,7 @@ from django.views.generic import View
 from django.urls import reverse_lazy
 from .models import Profile, Object, Contract
 from .forms import UserForm, LoginForm, RequestForm
+import datetime
 
 
 def home(request):
@@ -25,6 +26,18 @@ def dashboard(request):
 def show_user(request, user_id):
     user = get_object_or_404(User, pk=user_id)
     return render(request, 'lending/show_user.html', {'user': user})
+
+def object_borrowed(request, contract_id):
+    contract = get_object_or_404(Contract, pk=contract_id)
+    contract.timeBorrowed = datetime.date.today()
+    contract.save()
+    return redirect('lending:show-contracts')
+
+def object_returned(request, contract_id):
+    contract = get_object_or_404(Contract, pk=contract_id)
+    contract.timeReturned = datetime.date.today()
+    contract.save()
+    return redirect('lending:show-contracts')
 
 def show_profile(request, profile_id):
     profile = get_object_or_404(Profile, pk=profile_id)

@@ -20,4 +20,6 @@ urlpatterns = [
         url(r'^delete-object/(?P<pk>[0-9]+)/$', views.DeleteObject.as_view(), name='delete-object'),
         url(r'^update-object/(?P<pk>[0-9]+)/$', views.UpdateObject.as_view(), name='update-object'),
         url(r'^create-request/(?P<object_id>[0-9]+)/$', views.CreateRequestView.as_view(), name='create-request'),
+        url(r'^object-borrowed/(?P<contract_id>[0-9]+)/$', views.object_borrowed, name='object_borrowed'),
+        url(r'^object-returned/(?P<contract_id>[0-9]+)/$', views.object_returned, name='object_returned'),
 ]

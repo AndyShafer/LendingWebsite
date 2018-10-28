@@ -18,11 +18,26 @@
 	<div class="select_display" id="lending">
 		{% if lending_contracts %}
 		{% for contract in lending_contracts %}
-			<div>
+			{% if contract.timeReturned %}
+			<div class="returned">
+			{% elif contract.timeBorrowed %}
+			<div class="unreturned">
+			{% else %}
+			<div class="not-received">
+			{% endif %}
 				<div><h3>{{ contract.borrowedObject }}</div>
 				<div>Borrower: {{ contract.borrowedBy }}</div>
-				<div>Start time: {{ contract.startTime }}</div>
-				<div>End time: {{ contract.endTime }}</div>
+				<div>Planned Start Date: {{ contract.startTime }}</div>
+				<div>Planned End Date: {{ contract.endTime }}</div>
+				{% if contract.timeReturned %}
+				<div><h4>Returned</h4></div>
+				<div>Date Borrowed: {{ contract.timeBorrowed }}</div>
+				<div>Date Returned: {{ contract.timeReturned }}</div>
+				{% elif contract.timeBorrowed %}
+				<div><h4>Has not been returned</h4><a href="#">I have gotten it back</a></div>
+				{% else %}
+				<div><h4>Has not been borrowed yet</h4> <a href="#">Borrower has received this</a></div>
+				{% endif %}
 			</div>
 		{% endfor %}
 		{% else %}

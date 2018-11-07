@@ -3,10 +3,10 @@ from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.views import generic
-from django.views.generic.edit import UpdateView
+from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic import View
 from django.urls import reverse_lazy
-from .models import Profile
+from .models import Profile, Object
 from .forms import UserForm, LoginForm
 
 
@@ -78,6 +78,15 @@ class UpdateProfile(UpdateView):
         if not self.user_passes_test(request):
             return redirect('lending:login')
         return super(UpdateProfile, self).dispatch(request, *args, **kwargs)
+
+class CreateObject(CreateView):
+    model = Object
+    fields = ['name', 'description']
+    success_url = reverse_lazy('lending:dashboard')
+
+    def form_valid(self, form):
+        form.instance.ownedBy = self.request.user
+        return super(CreateObject, self).form_valid(form)
 
 class LoginFormView(View):
     form_class = LoginForm

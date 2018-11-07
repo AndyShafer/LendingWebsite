@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from .models import Profile
+from .models import Profile, Object
 from django import forms
 
 class UserForm(forms.ModelForm):
@@ -19,3 +19,7 @@ class ProfileForm(forms.ModelForm):
         model = Profile
         fields = ['address', 'city', 'state', 'bio']
         
+class ObjectForm(forms.ModelForm):
+    class Meta:
+        model = Object
+        fields = ['name', 'description']
